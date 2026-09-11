@@ -113,15 +113,19 @@ async function getGoogleLocationName(latitude, longitude) {
       region: "ID"
     });
 
-    const result = response.results?.[0];
-    if (!result?.formatted_address) {
-      return `${latitude}, ${longitude}`;
+    // Perbaikan: Pastikan response dan response.results benar-benar ada sebelum dibaca
+    if (response && response.results && response.results.length > 0) {
+      const result = response.results[0];
+      if (result && result.formatted_address) {
+        return result.formatted_address;
+      }
     }
 
-    return result.formatted_address;
+    return `${latitude}, ${longitude}`;
   } catch (error) {
-    console.warn("Google reverse geocoding gagal:", error);
-    throw error;
+    console.warn("Google reverse geocoding gagal, menggunakan koordinat default:", error);
+    // Return koordinat sebagai nama fallback tanpa melempar (throw) error
+    return `${latitude}, ${longitude}`;
   }
 }
 
@@ -188,10 +192,10 @@ async function loadWeather(query) {
     return;
   }
 
-  setStatus("Mengambil cuaca dan nama lokasi dari Google Maps...");
+  setStatus("Mengambil cuaca dan nama lokasi...");
 
   try {
-    // Fetch weather and reverse geocoding in parallel.
+    // Fetch weather and reverse geocoding
     const [weather, locationName] = await Promise.all([
       getWeather(place),
       getGoogleLocationName(place.latitude, place.longitude)
