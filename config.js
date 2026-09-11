@@ -3,5 +3,5 @@
 // For GitHub Pages, restrict the key by HTTP referrer to your site, e.g.:
 // https://kholilmuluk123.github.io/weather-dashboard/*
 window.APP_CONFIG = {
-  GOOGLE_MAPS_API_KEY: "YOUR_GOOGLE_MAPS_API_KEY"
+  GOOGLE_MAPS_API_KEY: "AIzaSyB0axHDaZy_xpxPibs2f4hWLuVFP1-rbq8"
 };
