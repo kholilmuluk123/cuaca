@@ -113,7 +113,6 @@ async function getGoogleLocationName(latitude, longitude) {
       region: "ID"
     });
 
-    // Perbaikan: Pastikan response dan response.results benar-benar ada sebelum dibaca
     if (response && response.results && response.results.length > 0) {
       const result = response.results[0];
       if (result && result.formatted_address) {
@@ -124,7 +123,6 @@ async function getGoogleLocationName(latitude, longitude) {
     return `${latitude}, ${longitude}`;
   } catch (error) {
     console.warn("Google reverse geocoding gagal, menggunakan koordinat default:", error);
-    // Return koordinat sebagai nama fallback tanpa melempar (throw) error
     return `${latitude}, ${longitude}`;
   }
 }
@@ -171,6 +169,12 @@ function render(place, data) {
   const c = data.current;
   const [icon, label] = weatherInfo(c.weather_code);
 
+  // Mengambil nama kota dari timezone (misal: "Asia/Jakarta" -> "Jakarta")
+  const rawTimezone = data.timezone || "";
+  const cityName = rawTimezone.includes("/") 
+    ? rawTimezone.split("/").pop().replace(/_/g, " ") 
+    : rawTimezone;
+
   els.icon.textContent = icon;
   els.temp.textContent = `${Math.round(c.temperature_2m)}°C`;
   els.location.textContent = place.name || `${place.latitude}, ${place.longitude}`;
@@ -178,7 +182,10 @@ function render(place, data) {
   els.humidity.textContent = `${Math.round(c.relative_humidity_2m)}%`;
   els.wind.textContent = `${Number(c.wind_speed_10m).toFixed(1)} km/h`;
   els.coords.textContent = `Lat ${Number(place.latitude).toFixed(4)} · Lon ${Number(place.longitude).toFixed(4)}`;
-  els.updated.textContent = `Timezone ${data.timezone}`;
+  
+  // Tampilan diubah menjadi Zona Kota saja (misal: "Wilayah: Jakarta")
+  els.updated.textContent = `Wilayah: ${cityName || "Tidak diketahui"}`;
+  
   renderForecast(data);
 }
 
@@ -195,7 +202,6 @@ async function loadWeather(query) {
   setStatus("Mengambil cuaca dan nama lokasi...");
 
   try {
-    // Fetch weather and reverse geocoding
     const [weather, locationName] = await Promise.all([
       getWeather(place),
       getGoogleLocationName(place.latitude, place.longitude)
