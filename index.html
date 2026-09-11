@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weather Dashboard — Open-Meteo</title>
+  <meta name="description" content="Weather dashboard powered by Open-Meteo" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main class="page">
+    <section class="weather-card">
+      <div class="search-row">
+        <input id="searchInput" type="text"
+          placeholder="Masukkan latitude, longitude (contoh: -7.7956, 110.3695)"
+          autocomplete="off" />
+        <button id="searchBtn" aria-label="Cari cuaca">
+          <span>⌕</span>
+        </button>
+      </div>
+
+
+      <div id="status" class="status">Memuat cuaca...</div>
+
+      <div class="weather-main">
+        <div id="weatherIcon" class="weather-icon">☀️</div>
+        <div id="temperature" class="temperature">--°C</div>
+        <div id="location" class="location">--</div>
+        <div id="description" class="description">--</div>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-icon">≋</div>
+          <div>
+            <strong id="humidity">--%</strong>
+            <span>Humidity</span>
+          </div>
+        </div>
+        <div class="stat">
+          <div class="stat-icon">≋</div>
+          <div>
+            <strong id="wind">-- km/h</strong>
+            <span>Wind Speed</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="coordinates">
+        <span id="coords">Lat -- · Lon --</span>
+        <span id="updated">--</span>
+      </div>
+    </section>
+
+    <section class="forecast-card">
+      <div class="forecast-header">
+        <h2>Prakiraan 5 Hari</h2>
+        <span>Open-Meteo</span>
+      </div>
+      <div id="forecast" class="forecast-grid"></div>
+    </section>
+
+    <footer>
+      Data cuaca: Open-Meteo · Nama lokasi: Google Maps Platform
+      <div class="google-attribution" aria-label="Google Maps attribution">
+        <span>Reverse geocoding:</span>
+        <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_92x30dp.png" alt="Google" width="92" height="30" />
+      </div>
+    </footer>
+  </main>
+
+  <script src="./config.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
